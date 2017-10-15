@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--无参构造方法创建-->
+    <bean id="user" class="com.hdl.ioc.User"/>
+    <!--静态方法工厂创建对象-->
+    <bean id="user1" class="com.hdl.ioc.UserFactory" factory-method="getUser"/>
+    <!--使用实例工厂创建对象-->
+    <bean id="userFactory2" class="com.hdl.ioc.UserFactory2"/>
+    <bean id="user2" factory-bean="userFactory2" factory-method="getUser"/>
+</beans>

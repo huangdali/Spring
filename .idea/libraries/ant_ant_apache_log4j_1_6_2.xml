@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ant:ant-apache-log4j:1.6.2" type="repository">
+    <properties maven-id="ant:ant-apache-log4j:1.6.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/ant-apache-log4j-1.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
