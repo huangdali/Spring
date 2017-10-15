@@ -41,4 +41,4 @@ Spring在javaee三层结构中，每一层都提供了不同的解决技术
 
 图解：
 
-![](h)
+![](https://github.com/huangdali/Spring/blob/master/image/ioc1.png)
