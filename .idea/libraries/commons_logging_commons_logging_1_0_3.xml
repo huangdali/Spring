@@ -3,8 +3,10 @@
     <properties maven-id="commons-logging:commons-logging:1.0.3" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-logging-1.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-logging-1.0.3.jar!/" />
     </CLASSES>
     <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-logging-1.0.3-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-logging-1.0.3-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
