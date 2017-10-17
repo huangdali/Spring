@@ -4,25 +4,25 @@
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!--无参构造方法创建-->
-    <bean id="user" class="com.hdl.ioc.User"/>
+    <bean id="user" class="com.hdl.ioc.day01.User"/>
     <!--静态方法工厂创建对象-->
-    <bean id="user1" class="com.hdl.ioc.UserFactory" factory-method="getUser"/>
+    <bean id="user1" class="com.hdl.ioc.day01.UserFactory" factory-method="getUser"/>
     <!--使用实例工厂创建对象,默认：scope="singleton"单例-->
-    <bean id="userFactory2" class="com.hdl.ioc.UserFactory2"/>
+    <bean id="userFactory2" class="com.hdl.ioc.day01.UserFactory2"/>
     <bean id="user2" factory-bean="userFactory2" factory-method="getUser" scope="singleton"/>
     <!--属性注入->构造注入-->
-    <bean id="property1" class="com.hdl.ioc.PropertyDi">
+    <bean id="property1" class="com.hdl.ioc.day01.PropertyDi">
         <constructor-arg name="username" value="大力哥">
         </constructor-arg>
     </bean>
     <!--属性注入->set属性注入-->
-    <bean id="property2" class="com.hdl.ioc.PropertyDi">
+    <bean id="property2" class="com.hdl.ioc.day01.PropertyDi">
         <!--name表示类中的属性值-->
         <property name="username" value="hah"/>
     </bean>
     <!--属性注入->set属性注入->set对象-->
-    <bean id="userDaoConfig" class="com.hdl.ioc.UserDao"/>
-    <bean id="userService" class="com.hdl.ioc.UserService">
+    <bean id="userDaoConfig" class="com.hdl.ioc.day01.UserDao"/>
+    <bean id="userService" class="com.hdl.ioc.day01.UserService">
         <property name="userDao" ref="userDaoConfig">
         </property>
     </bean>

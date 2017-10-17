@@ -1,4 +1,4 @@
-package com.hdl.ioc;
+package com.hdl.ioc.day01;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

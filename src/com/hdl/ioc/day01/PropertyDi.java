@@ -1,4 +1,4 @@
-package com.hdl.ioc;
+package com.hdl.ioc.day01;
 
 /**
  * Created by HDL on 2017/10/16.
