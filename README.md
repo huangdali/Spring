@@ -63,9 +63,9 @@ Spring在javaee三层结构中，每一层都提供了不同的解决技术
 
 属性注入的三种方式：
 
-1、set方法注入（最常用）
+#### 1、set方法注入（最常用）
 
-入门：
+##### 1.1、入门：
 
 ```xml
     <!--属性注入->属性注入-->
@@ -82,7 +82,7 @@ Spring在javaee三层结构中，每一层都提供了不同的解决技术
         propertyDi.print();
     }
 ```
-
+##### 1.2、常用
 实际开发中：
 
 ```java
@@ -145,11 +145,26 @@ public class UserService {
 add--------我去，整个过程就不需要new UserDao（）了
 执行service的结果: true
 ```
+##### 1.3、名字空间注入(不常用)
+
+![](https://github.com/huangdali/Spring/blob/master/image/namespace.png)
+
+##### 1.4、复杂类型注入（不常用）
+
+- 数组
+
+![](https://github.com/huangdali/Spring/blob/master/image/arr.png)
+
+- list集合
+
+![](https://github.com/huangdali/Spring/blob/master/image/list.png)
+
+- map集合、properties
+
+![](https://github.com/huangdali/Spring/blob/master/image/map_properties.png)
 
 
-
-
-2、构造方法注入
+#### 2、构造方法注入
 
 配置：
 
@@ -173,7 +188,7 @@ add--------我去，整个过程就不需要new UserDao（）了
 
 
 
-3、接口注入(Bean 不支持这种注入)
+#### 3、接口注入(Bean 不支持这种注入)
 ```java
 public interface Dao{
     void delte(String name);
@@ -186,9 +201,6 @@ public class DaoImpl implements Dao{
     }
 }
 ```
-
-
-
 
 
 
