@@ -15,7 +15,7 @@
         <aop:pointcut id="pointcut1" expression="execution(* *.*(..))"/>
         <!--配置切面(增强用到方法上)-->
         <aop:aspect ref="bookZQ">
-            <!--配置method作用在pointcut上-->
+            <!--配置method作用在pointcut上（前置增强）-->
             <aop:before method="before"  pointcut-ref="pointcut1"/>
         </aop:aspect>
     </aop:config>
