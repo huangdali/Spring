@@ -359,6 +359,235 @@ public class BookService {
 
 - 2、注入属性一般使用注解来完成
 
+## AOP 面向切面编程
+### 概述
+效果：扩展功能，可以不通过修改原代码来实现
+
+机制：aop采取**横向抽取机制**，取代传统**纵向继承体系**重复性代码（性能监视、事务管理、安全检查、缓存）
+
+Spring Aop使用纯java实现，不需要专门的编辑过程和类加载器，在运行期间通过代理方式向目标类注入增强代码；
+
+AspecJ是一个基于java语言的aop框架，Spring2.0开始就支持了，AspectJ扩展了java语言，提供了一个专门的编译器，在编译时提供横向代码的注入；
+
+### AOP原理（了解）
+
+纵向机制
+
+![](https://github.com/huangdali/Spring/blob/master/image/zxjz.png)
+
+横向机制
+
+![](https://github.com/huangdali/Spring/blob/master/image/hzcq.png)
+
+### aop操作术语
+
+- Joinpoint（连接点）：类里面的方法可以被增强，这些方法称为连接点
+
+- Pointcut(切入点)：所谓切入点是指我们要对哪些joinpoint（连接点）进行拦截的定义
+    - 在类里面可以有很多方法可以被增强，比如实际操作中，只是增强了add和update，实际增强的方法称为切入点。
+
+- Advice（通知/增强）：所谓通知是指拦截到joinpoint之后需要做的申请就是通知，通知分为前置通知、后置通知、异常通知、最终通知、环绕通知（切面要完成的功能）
+    - 增强的逻辑，称为增强，比如扩展日志功能
+    - 前置通知：方法之前执行
+    - 后置通知：方法只会执行
+    - 异常通知：方法出现异常
+    - 最终通知：在后置之后
+    - 环绕通知：在方法之前和之后都执行
+
+- Aspect(切面)：是切入点和通知的结合
+    - 把增强应用到具体的切入点方法上的过程
+    
+![](https://github.com/huangdali/Spring/blob/master/image/other.png)
+
+### aop操作
+
+使用aspectj来实现aop
+
+#### aspectj
+
+本身不是spring的一部分，而是结合spring使用
+
+是一个基于java语言的aop框架，Spring2.0开始就支持了，AspectJ扩展了java语言，提供了一个专门的编译器，在编译时提供横向代码的注入；
+
+### aspectj两种实现方式
+
+操作前，需要导入aop的约束
+
+1、配置xml文件
+
+1.1、使用表达式配置切入点
+
+execution(<访问修饰符>?<返回类型><方法名>(<参数>)<异常>)
+
+- 访问修饰符:private public protacted等，使用*表示任何
+- 
+
+eg1：execution(* com.hdl.ioc.day03.Book.add(..)) 类中指定方法
+
+eg2：execution(\* com.hdl.ioc.day03.Book.**(..)) 包中所有方法
+
+eg3：execution(\* \*.*(..)) 所有包中所有方法
+
+eg4：execution(\* save.*(..)) 所有包含save开头的方法
+
+1.2、开始配置
+
+原有类：
+
+```java
+public class Book {
+    public void add(String name) {
+        System.out.println("add-------" + name);
+    }
+}
+```
+
+为book类增加前置增强:
+
+```java
+/**
+ * book的增强类
+ * Created by HDL on 2017/10/18.
+ */
+public class BookZQ {
+    public void before() {
+        System.out.println("前置增强.........");
+    }
+}
+```
+
+xml配置：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置对象-->
+    <bean id="book" class="com.hdl.ioc.day03.Book"/>
+    <!--增强类-->
+    <bean id="bookZQ" class="com.hdl.ioc.day03.BookZQ"/>
+    <!--配置aop操作-->
+    <aop:config>
+        <!--配置切入点-->
+        <aop:pointcut id="pointcut1" expression="execution(* com.hdl.ioc.day03.Book.*(..))"/>
+        <!--配置切面(增强用到方法上)-->
+        <aop:aspect ref="bookZQ">
+            <!--配置method作用在pointcut上-->
+            <aop:before method="before"  pointcut-ref="pointcut1"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
+```
+
+测试：
+
+```java
+public class TestZQ {
+    @Test
+    public void testZQ(){
+        ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext_aop.xml");
+        Book book= (Book) context.getBean("book");
+        book.add("哈利波特");
+    }
+}
+```
+
+输出：
+```java
+前置增强.........
+add-------哈利波特
+```
+
+新增方法：
+
+```java
+public class Book {
+    public void add(String name) {
+        System.out.println("add-------" + name);
+    }
+
+    public void update(int id) {
+        System.out.println("update-------" + id);
+    }
+}
+```
+修改表达式为增强所有类的所有方法
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置对象-->
+    <bean id="book" class="com.hdl.ioc.day03.Book"/>
+    <!--增强类-->
+    <bean id="bookZQ" class="com.hdl.ioc.day03.BookZQ"/>
+    <!--配置aop操作-->
+    <aop:config>
+        <!--配置切入点-->
+        <aop:pointcut id="pointcut1" expression="execution(* *.*(..))"/>
+        <!--配置切面(增强用到方法上)-->
+        <aop:aspect ref="bookZQ">
+            <!--配置method作用在pointcut上-->
+            <aop:before method="before"  pointcut-ref="pointcut1"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
+```
+测试:
+
+```java
+public class TestZQ {
+    @Test
+    public void testZQ(){
+        ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext_aop.xml");
+        Book book= (Book) context.getBean("book");
+        book.add("哈利波特");
+        book.update(1001);
+        System.out.println(book.toString());
+    }
+}
+```
+
+输出：
+
+```java
+前置增强.........
+add-------哈利波特
+前置增强.........
+update-------1001
+前置增强.........
+com.hdl.ioc.day03.Book@6989da5e
+
+```
+
+
+2、注解方式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
