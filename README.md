@@ -528,16 +528,20 @@ public class Book {
     <bean id="book" class="com.hdl.ioc.day03.Book"/>
     <!--增强类-->
     <bean id="bookZQ" class="com.hdl.ioc.day03.BookZQ"/>
-    <!--配置aop操作-->
-    <aop:config>
-        <!--配置切入点-->
-        <aop:pointcut id="pointcut1" expression="execution(* *.*(..))"/>
-        <!--配置切面(增强用到方法上)-->
-        <aop:aspect ref="bookZQ">
-            <!--配置method作用在pointcut上-->
-            <aop:before method="before"  pointcut-ref="pointcut1"/>
-        </aop:aspect>
-    </aop:config>
+   <!--配置aop操作-->
+      <aop:config>
+          <!--配置切入点，第一个*之后有空格-->
+          <aop:pointcut id="pointcut1" expression="execution(* *.*(..))"/>
+          <!--配置切面(增强用到方法上)-->
+          <aop:aspect ref="bookZQ">
+              <!--配置method作用在pointcut上（前置增强）-->
+              <aop:before method="before" pointcut-ref="pointcut1"/>
+              <!--后置增强-->
+              <aop:after-returning method="after" pointcut-ref="pointcut1"/>
+              <!--环绕增强-->
+              <aop:around method="arund" pointcut-ref="pointcut1"/>
+          </aop:aspect>
+      </aop:config>
 </beans>
 ```
 测试:
@@ -550,7 +554,6 @@ public class TestZQ {
         Book book= (Book) context.getBean("book");
         book.add("哈利波特");
         book.update(1001);
-        System.out.println(book.toString());
     }
 }
 ```
@@ -559,11 +562,17 @@ public class TestZQ {
 
 ```java
 前置增强.........
+方法前----------------
 add-------哈利波特
+方法后---------------
+后置增强.........
+
+
 前置增强.........
+方法前----------------
 update-------1001
-前置增强.........
-com.hdl.ioc.day03.Book@6989da5e
+方法后---------------
+后置增强.........
 
 ```
 
@@ -579,7 +588,17 @@ com.hdl.ioc.day03.Book@6989da5e
 
 
 
+## Log4J
 
+程序运行过程中记录详细信息
+
+配置：复制配置文件log4j.properties到src文件中
+
+日志级别：
+
+- info 基本信息
+
+- debug 更详细信息
 
 
 

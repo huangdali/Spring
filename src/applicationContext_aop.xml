@@ -16,7 +16,11 @@
         <!--配置切面(增强用到方法上)-->
         <aop:aspect ref="bookZQ">
             <!--配置method作用在pointcut上（前置增强）-->
-            <aop:before method="before"  pointcut-ref="pointcut1"/>
+            <aop:before method="before" pointcut-ref="pointcut1"/>
+            <!--后置增强-->
+            <aop:after-returning method="after" pointcut-ref="pointcut1"/>
+            <!--环绕增强-->
+            <aop:around method="arund" pointcut-ref="pointcut1"/>
         </aop:aspect>
     </aop:config>
 </beans>
