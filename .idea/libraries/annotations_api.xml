@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="annotations-api">
+    <CLASSES>
+      <root url="jar://D:/Program Files/apache-tomcat-7.0.75/lib/annotations-api.jar!/" />
+      <root url="jar://D:/Program Files/apache-tomcat-7.0.75/lib/servlet-api.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

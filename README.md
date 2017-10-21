@@ -600,10 +600,119 @@ update-------1001
 
 - debug 更详细信息
 
+## 一个比较完整的Spring Demo
+项目结构图：
 
+![](https://github.com/huangdali/Spring/blob/master/image/struct.png)
 
+结果：
 
+![](https://github.com/huangdali/Spring/blob/master/image/out.png)
 
+### 导入必要的jar包(见结构图)
+### 创建并配置spring的配置文件：applicationContext_web.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--开启注解扫描
+   会根据base-package填写的包名，扫描所有的属性、方法、类上是否有注解
+   -->
+    <context:component-scan base-package="com.hdl.ioc.day04"/>
+    <!--用下面这个配置，只会扫描属性上面的注解-->
+    <!--<context:annotation-config></context:annotation-config>-->
+</beans>
+```
+### 配置web.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <!--配置Spring监听器，自动加载配置文件(避免每次访问servlet都需要加载一次配置文件，浪费资源)-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext_web.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+</web-app>
+```
+
+### 创建userservlet
+```java
+@WebServlet("/UserServlet")
+public class UserServlet extends javax.servlet.http.HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String username = request.getParameter("username");
+        String pwd = request.getParameter("pwd");
+        System.out.println(username+"\n"+pwd);
+        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        UserService userService = (UserService) context.getBean("userService");
+        boolean registe = userService.registe(username, pwd);
+        PrintWriter pw = response.getWriter();
+        pw.write("username=" + username + "\n");
+        pw.write("pwd=" + pwd + "\n");
+        pw.write("是否注册成功：" + registe);
+        pw.close();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request, response);
+    }
+}
+```
+
+### 创建UserService
+
+```java
+/**
+ * 实际提供用户操作逻辑的地方
+ * Created by HDL on 2017/10/21.
+ */
+@Service("userService")
+public class UserService {
+    //    @Autowired
+    @Resource(name = "userDao")
+    private UserDao userDao;
+
+    public  boolean registe(String username, String pwd) {
+        if (username == null || "".equals(username) || pwd == null || "".equals(pwd)) {
+            return false;
+        }
+        return userDao.registe(username, pwd);
+    }
+}
+
+```
+
+### 创建UserDao
+
+```java
+/**
+ * 实际操作用户数据库的地方
+ * Created by HDL on 2017/10/21.
+ */
+@Component("userDao")
+public class UserDao {
+    public boolean registe(String username, String pwd) {
+        if ("admin".equals(username) && "132".equals(pwd)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+```
 
 
 

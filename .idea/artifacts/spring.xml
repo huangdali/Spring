@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="spring">
+    <output-path>D:/Program Files/apache-tomcat-7.0.75/webapps/spring</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="spring_demo/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="spring_demo" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="spring-web-4.3.3.RELEASE" />
+          <element id="library" level="project" name="ant:ant-apache-log4j:1.6.2" />
+          <element id="library" level="project" name="commons-logging:commons-logging:1.0.3" />
+          <element id="library" level="project" name="spring-beans-4.3.3.RELEASE" />
+          <element id="library" level="module" name="JUnit4" module-name="spring_demo" />
+          <element id="library" level="project" name="spring-aop-4.3.3.RELEASE" />
+          <element id="library" level="project" name="aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="org.aspectj:aspectjweaver:1.8.7" />
+          <element id="library" level="project" name="spring-aspects-4.3.3.RELEASE" />
+          <element id="library" level="project" name="annotations-api" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
