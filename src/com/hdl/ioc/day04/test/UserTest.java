@@ -13,6 +13,6 @@ public class UserTest {
     public void testUser(){
         ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext_web.xml");
         UserService userService= (UserService) context.getBean("userService");
-        userService.add();
+//        userService.add();
     }
 }

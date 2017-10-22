@@ -579,9 +579,97 @@ update-------1001
 
 2、注解方式
 
+![](https://github.com/huangdali/Spring/blob/master/image/aop_anno.png)
 
+2.1、配置自动代理和注解
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--开启注解扫描
+        会根据base-package填写的包名，扫描所有的属性、方法、类上是否有注解
+   -->
+    <context:component-scan base-package="com.hdl.ioc.day05"/>
 
+    <!--自动代理，注解aop-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 
+</beans>
+```
+2.2、原类（需要被增强的类）
+```java
+/**
+ * 原类（需要被增强的类）
+ * Created by HDL on 2017/10/21.
+ */
+@Component("book")
+public class Book {
+    public void add(String bookName) {
+        System.out.println("入库操作，操作编号：" + System.currentTimeMillis() + "\t书名：" + bookName);
+    }
+
+}
+
+```
+2.3 增强类
+
+```java
+/**
+ * 增强book类
+ * Created by HDL on 2017/10/21.
+ */
+@Aspect//表示是增强类
+@Component("bookZQ")
+public class BookZQ {
+    @Before(value = "execution(* com.hdl.ioc.day05.*.*(..))")
+    public void addZqBefore() {
+        System.out.println("入库时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+    }
+
+    @After(value = "execution(* com.hdl.ioc.day05.*.*(..))")
+    public void addZqAfte() {
+        System.out.println("入库完成时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+    }
+    @Around(value = "execution(* com.hdl.ioc.day05.*.*(..))")
+    public void around(ProceedingJoinPoint process){
+        System.out.println("方法执行前----------------");
+        try {
+            process.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        System.out.println("方法执行后---------------");
+
+    }
+}
+
+```
+2.4、测试
+```java
+public class BookTest {
+    @Test
+    public void testBook(){
+        ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext_aop_anno.xml");
+        Book book= (Book) context.getBean("book");
+        book.add("《明朝那些事》");
+    }
+}
+
+```
+2.5、结果
+```
+方法执行前----------------
+入库时间：2017-10-21 23:02:56
+入库操作，操作编号：1508598176859	书名：《明朝那些事》
+方法执行后---------------
+入库完成时间：2017-10-21 23:02:56
+
+```
 
 
 

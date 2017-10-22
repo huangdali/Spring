@@ -26,4 +26,7 @@
         <property name="userDao" ref="userDaoConfig">
         </property>
     </bean>
+    <bean class="com.hdl.ioc.day05.Book" id="book">
+        <property name="user2" ref="user2"/>
+    </bean>
 </beans>
